@@ -23,7 +23,7 @@ export const ProductGrid: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white p-6 text-black">
+    <div className="min-h-screen bg-[#2b2f6a] p-6 text-black">
       <header className="mb-10 border-b-2 border-black pb-4">
         <h1 className="text-4xl font-black uppercase tracking-tighter">e.l.f. Cosmetics</h1>
         <p className="mt-1 text-xs uppercase tracking-[0.3em] text-gray-500">Twitch Exclusive Showcase</p>

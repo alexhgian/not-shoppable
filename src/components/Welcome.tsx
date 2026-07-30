@@ -7,7 +7,7 @@ import IconTwitter from "./icons/IconTwitter";
 import Card from "./Card";
 
 const socialClass =
-  "transition-[color,transform,scale] hover:scale-125 focus:scale-125 hover:text-highlight focus:text-highlight";
+  "transition-[color,transform,scale] hover:scale-125 focus:scale-125 hover:text-[#34d5a3] focus:text-[#34d5a3]";
 
 interface WelcomeProps {
   className?: string;
@@ -41,7 +41,7 @@ export default function Welcome(props: WelcomeProps) {
       <ul className="mb-2 flex flex-wrap items-center justify-center gap-4">
         <li className={socialClass}>
           <a
-            href="https://www.elfcosmetics.com"
+            href="https://go.elfcosmetics.com/homepage"
             rel="noreferrer"
             target="_blank"
             title="Website"
@@ -61,7 +61,7 @@ export default function Welcome(props: WelcomeProps) {
         </li>
         <li className={socialClass}>
           <a
-            href="https://www.tiktok.com/@elfcosmetics"
+            href="https://www.tiktok.com/@elfyeah"
             rel="noreferrer"
             target="_blank"
             title="TikTok"
