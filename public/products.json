@@ -8,7 +8,7 @@
     "buy_url": "https://go.elfcosmetics.com/grlipoil"
   },
   {
-    "id": "1",
+    "id": "2",
     "name": "Sheer For It Blush Tint",
     "category": "Makeup",
     "price": "$9.00",
@@ -16,7 +16,7 @@
     "buy_url": "https://go.elfcosmetics.com/sheerforit"
   },
   {
-    "id": "1",
+    "id": "3",
     "name": "Power Grip Dewy Setting Spray",
     "category": "Makeup",
     "price": "$9.00",
@@ -24,7 +24,7 @@
     "buy_url": "https://go.elfcosmetics.com/pgpdewy"
   },
   {
-    "id": "1",
+    "id": "4",
     "name": "Halo Glow Skin Tint SPF 50",
     "category": "Makeup",
     "price": "$9.00",
@@ -32,7 +32,7 @@
     "buy_url": "https://go.elfcosmetics.com/HGtint"
   },
   {
-    "id": "1",
+    "id": "5",
     "name": "Power Grip Primer",
     "category": "Makeup",
     "price": "$9.00",
@@ -40,7 +40,7 @@
     "buy_url": "https://go.elfcosmetics.com/powergripprimer"
   },
   {
-    "id": "1",
+    "id": "6",
     "name": "Halo Glow Liquid Filter",
     "category": "Makeup",
     "price": "$9.00",
@@ -48,7 +48,7 @@
     "buy_url": "https://go.elfcosmetics.com/HGfilter"
   },
   {
-    "id": "6",
+    "id": "7",
     "name": "Suntouchable Whoa Glow SPF 30",
     "category": "Skincare",
     "price": "$15.00",
@@ -56,7 +56,7 @@
     "buy_url": "https://go.elfcosmetics.com/whoaglow"
   },
   {
-    "id": "6",
+    "id": "8",
     "name": "Holy Hydration! Thirst Burst Drops",
     "category": "Skincare",
     "price": "$13.00",
@@ -64,7 +64,7 @@
     "buy_url": "https://go.elfcosmetics.com/TBdrops"
   },
   {
-    "id": "6",
+    "id": "9",
     "name": "Holy Hydration! Makeup Melting Cleansing Balm",
     "category": "Skincare",
     "price": "$12.00",
@@ -72,7 +72,7 @@
     "buy_url": "https://go.elfcosmetics.com/cleansingbalm"
   },
   {
-    "id": "6",
+    "id": "10",
     "name": "Youth Boosting Blue-ty Sleep Night Oil",
     "category": "Skincare",
     "price": "$19.00",
@@ -80,7 +80,7 @@
     "buy_url": "https://go.elfcosmetics.com/bluetysleep"
   },
   {
-    "id": "6",
+    "id": "11",
     "name": "Bright Icon Vitamin C + E + Ferulic Serum",
     "category": "Skincare",
     "price": "$17.00",
@@ -88,7 +88,7 @@
     "buy_url": "https://go.elfcosmetics.com/vitaminC"
   },
   {
-    "id": "6",
+    "id": "12",
     "name": "Holy Hydration! Triple Bounce Serum",
     "category": "Skincare",
     "price": "$13.00",

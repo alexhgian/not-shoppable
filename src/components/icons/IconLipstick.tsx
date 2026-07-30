@@ -17,8 +17,8 @@ const IconLipstick: FC<IconProps> = ({ size = 24, className }) => (
     strokeLinejoin="round"
     className={className}
   >
-    <path d="m9 11 3-2V4a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v5l-3 2" />
-    <rect width="8" height="12" x="8" y="11" rx="2" />
+    <path d="M9 12V5c0-1.1.9-2 2-2h1l3 4v5Z" />
+    <rect width="10" height="12" x="7" y="12" rx="2" />
   </svg>
 );
 
