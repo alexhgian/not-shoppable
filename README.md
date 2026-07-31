@@ -1,37 +1,50 @@
-# The Alveus Twitch Extension
+# elfyou Twitch Extension
 
-Twitch extension for [Alveus Sanctuary](https://www.alveussanctuary.org), allowing stream viewers to learn more about the ambassadors at the sanctuary.
+Twitch extension for the [**elfyou**](https://www.twitch.tv/elfyou) channel, letting
+stream viewers browse e.l.f. products and click through to
+[elfcosmetics.com](https://www.elfcosmetics.com).
 
-## Demo
+Products are grouped into **Makeup**, **Skincare** and **Haircare**. Moderators can
+push a specific product card on screen with a chat command.
 
-### Overlay
+Forked from [`alveusgg/extension`](https://github.com/alveusgg/extension) — see
+[LICENSE.md](LICENSE.md).
 
-https://user-images.githubusercontent.com/49528805/229294979-1cf91fc2-420a-43ec-95c4-78c06d4ec99d.mp4
+## Surfaces
 
-### Panel
+The same catalogue is rendered in three places, all built from `src/pages/`:
 
-https://user-images.githubusercontent.com/49528805/229295136-675313d2-54e4-4758-a42c-76961c4d2e66.mp4
-
-### Mobile
-
-https://user-images.githubusercontent.com/49528805/229295376-6490d0a5-5f01-456b-8509-6e551ce82f1c.mp4
+| Surface     | Entry                | What it is                                                                                                                  |
+| ----------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| **Overlay** | `video_overlay.html` | Buttons down the left of the video. Each opens a scrollable product list; picking one shows its card. Auto-hides when idle. |
+| **Panel**   | `panel.html`         | Below-stream panel. Category tabs and a product grid; tapping a product opens its card in a dialog.                         |
+| **Mobile**  | `mobile.html`        | Same build as the panel.                                                                                                    |
 
 ## Local Set Up
 
-1. Install Node.js (see `engines` in `package.json` for the required versions), or use `fnm`/`nvm` to install the correct version of Node.js, and use `corepack enable` to use PNPM.
-2. Authenticate with the GitHub Package Registry: `npm login --auth-type=legacy --registry=https://npm.pkg.github.com`
-   1. Use your GitHub username (lowercase) as the username when prompted
-   2. Create a [GitHub personal access token (classic)](https://github.com/settings/tokens/new) with the `read:packages` scope and use it as the password when prompted
-3. Install dependencies for the project with `pnpm install --frozen-lockfile`
-4. Head up to https://dev.twitch.tv/console/extensions/create and create a new extension.
-   You will need to create a new version: Select `Panel`, `Mobile` and `Video - Fullscreen` for the extension type. Leave all other settings as they are.
-5. Copy the `.env.sample` file to `.env` (which sets `REACT_APP_CHAT_COMMANDS_PRIVILEGED_USERS` and `REACT_APP_DEFAULT_CHANNEL_NAMES`)
-6. Copy the `.env.development.sample` file to `.env.development`. You may add a channel and user to test chat commands here (e.g. `REACT_APP_CHAT_COMMANDS_TEST_CHANNEL=testuser` and `REACT_APP_CHAT_COMMANDS_PRIVILEGED_USERS=testuser`)
-7. Start the development server with `pnpm dev`
+1. Install Node.js (see `engines` in `package.json` for the required versions), or
+   use `fnm`/`nvm` to install the correct version, and run `corepack enable` to use
+   PNPM.
+2. Install dependencies with `pnpm install --frozen-lockfile`
+3. Head to https://dev.twitch.tv/console/extensions/create and create a new
+   extension. You will need to create a new version: select `Panel`, `Mobile` and
+   `Video - Fullscreen` for the extension type. Leave all other settings as they are.
+4. Copy `.env.sample` to `.env`
+5. Copy `.env.development.sample` to `.env.development`. To test chat commands, set
+   a channel to listen to and a user allowed to trigger them — e.g.
+   `REACT_APP_TEST_CHANNEL_NAMES=testuser` and
+   `REACT_APP_CHAT_COMMANDS_PRIVILEGED_USERS=testuser`
+6. Start the development server with `pnpm dev`
 
-If you're using VSCode, add `"typescript.tsdk": "node_modules/typescript/lib"` to `.vscode/settings.json` to ensure you're using the correct TypeScript version.
+If you're using VSCode, add `"typescript.tsdk": "node_modules/typescript/lib"` to
+`.vscode/settings.json` to ensure you're using the correct TypeScript version.
 
-There are two ways to run the extension. You can either add it to a channel on Twitch, or access the web pages for the panel/overlay directly.
+> `REACT_APP_API_BASE_URL` appears in the env samples but is vestigial — it pointed
+> at the upstream ambassador API, which was removed. It survives only as a
+> `preconnect` hint in `src/template.html`.
+
+There are two ways to run the extension. You can either add it to a channel on
+Twitch, or access the web pages for the panel/overlay directly.
 
 ### Running via Twitch
 
@@ -76,6 +89,11 @@ ffmpeg -re \
 If you just want to test out the overlay, or the panel, locally without Twitch, you can do so by directly opening the pages in a browser. After all, Twitch overlays and panels are just embedded web apps.
 
 The panel is available at [localhost:8080/panel.html](https://localhost:8080/panel.html) and the overlay is available at [localhost:8080/video_overlay.html](https://localhost:8080/video_overlay.html) while the development server is running.
+
+Chat commands still work in this mode — the extension connects to the channels in
+`REACT_APP_DEFAULT_CHANNEL_NAMES` and `REACT_APP_TEST_CHANNEL_NAMES`. What won't
+work is anything needing Twitch to identify the channel, since that comes from the
+Twitch helper.
 
 ## Chatbot Commands
 
@@ -126,22 +144,69 @@ in the catalogue.
 
 Run `pnpm lint` afterwards; Prettier formats `products.json`.
 
+### Adding a category
+
+`src/utils/categories.ts` is the single source of truth. Add an entry there and the
+overlay gains a button and the panel a tab. You also need an icon in
+`categoryIcons` in `src/pages/overlay/components/overlay/Overlay.tsx` — omitting one
+fails `pnpm types` rather than rendering a blank button.
+
+## Brand Tokens
+
+Colour lives in two layers in `src/styles/tailwind.css`:
+
+- **Palette** — raw brand values (`--color-elfyou-magenta`). Not referenced by
+  components.
+- **Semantic roles** — what components actually use (`--color-surface`,
+  `--color-accent`, `--color-highlight`).
+
+**Components must reference roles, never palette values or raw hex.** That's what
+makes the extension rethemeable, and hardcoding is how a non-brand pink shipped for
+months before anyone noticed.
+
+`brand/tokens.json` records each value, where it was measured, and any deliberate
+divergence. `pnpm lint:tokens` (part of `pnpm lint`) fails if the stylesheet and
+that record disagree, including when a colour is added without provenance.
+
+## Scripts
+
+| Command       | What it does                                                |
+| ------------- | ----------------------------------------------------------- |
+| `pnpm dev`    | Development server on port 8080 (HTTPS)                     |
+| `pnpm build`  | Production build into `build/`, plus `build.zip` for Twitch |
+| `pnpm types`  | `tsc --noEmit`                                              |
+| `pnpm lint`   | ESLint, Prettier and the brand-token check                  |
+| `pnpm format` | Fix what `lint` can fix automatically                       |
+
+Releasing to Twitch is covered in [RELEASE.md](RELEASE.md).
+
 ## Contribute
 
-Contributions are always welcome! If you have any ideas, suggestions, fixes, feel free to contribute. Make sure to discuss what you plan to work on either as an issue or in the discussion page. You can also throw in any ideas at all in the discussion page. You can contribute to the codebase by going through the following steps:
+Contributions are always welcome! If you have any ideas, suggestions or fixes, feel
+free to contribute. Discuss what you plan to work on as an issue first.
 
-1. Fork this repo
-2. Create a branch: `git checkout -b youruserame/your-feature`
-3. Make some changes
-4. Test your changes
-5. Push your branch and open a Pull Request
+1. Create a branch: `git checkout -b yourusername/your-feature`
+2. Make some changes
+3. Test your changes — `pnpm lint`, `pnpm types` and `pnpm build` should all pass
+4. Push your branch and open a Pull Request
 
-<b>\*Note:</b> All contributions must be possible for all displays (Overlay & Panel) and responsive to their different sizes (including mobile).
+<b>\*Note:</b> All contributions must work on all displays (Overlay & Panel) and be
+responsive to their different sizes, including mobile.
 
 ## User Data
 
-When using the extension, the extension will create an anonymous connection to the current Twitch channel's chat, as well as a few other Alveus-related Twitch channels. This is to allow the extension to listen for commands run by moderators to trigger popups in the overlay. The extension does not store any messages from chat.
+The extension makes an anonymous connection to the current Twitch channel's chat,
+plus the channels listed in `REACT_APP_DEFAULT_CHANNEL_NAMES` and
+`REACT_APP_EXTRA_CHANNEL_NAMES`. This is so it can listen for the commands
+moderators use to trigger product cards in the overlay. It does not store any
+messages from chat.
 
-When using the extension, it will create a local storage entry in your browser to store the last section of the overlay that you accessed, and any preferences you set (such as disabling the mod-triggered popups). This is to allow the extension to remember your preferences between sessions. The data stored in local storage is not shared with anyone and does not include any personal information.
+The extension creates a local storage entry in your browser recording the last
+section of the overlay you opened and any preferences you set, such as disabling
+mod-triggered pop-ups. This is so your preferences persist between sessions. It is
+not shared with anyone and contains no personal information.
 
-As a moderator, you can grant the extension access to your identity. This gives the extension information about your Twitch account, including your role in the current Twitch channel chat. This is used to determine if you are a moderator or broadcaster, and if so, shows you the chat commands in the extension to trigger the popups. The extension does not store any information about your Twitch account.
+The extension does **not** request identity sharing, and never sees your Twitch
+username or account details. Whether someone may trigger a product card is decided
+from the moderator and broadcaster badges attached to their chat messages, not from
+any account lookup.
