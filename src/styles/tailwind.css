@@ -15,7 +15,10 @@
 @theme {
   --default-transition-duration: 300ms;
 
-  /* elfyou palette — the gaming-side e.l.f. brand used across the extension */
+  /*
+   * Layer 1 — the elfyou palette. Raw brand values, named by what they are.
+   * Nothing outside this file should reference these directly.
+   */
   --color-elfyou: #ff007a;
   --color-elfyou-indigo: #454bc5;
   --color-elfyou-navy: #2b2f6a;
@@ -24,6 +27,16 @@
   --color-elfyou-purple: #9625e9;
   --color-elfyou-cream: #f5f0e8;
 
-  /* Focus/active affordance, used by Ring and the outline-* utilities */
+  /*
+   * Layer 2 — semantic roles, named by what they do. Components reference
+   * only these, so retheming (e.g. for e.l.f. proper rather than the elfyou
+   * gaming brand) means repointing this block, not touching any component.
+   */
+  --color-surface: var(--color-elfyou-indigo);
+  --color-surface-deep: var(--color-elfyou-navy);
+  --color-accent: var(--color-elfyou-mint);
+  --color-accent-strong: var(--color-elfyou-purple);
+  --color-heading: var(--color-elfyou-mint-light);
+  --color-neutral: var(--color-elfyou-cream);
   --color-highlight: var(--color-elfyou);
 }

@@ -8,7 +8,7 @@ interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
-    <div className="group flex flex-col border border-white/20 bg-[#454bc5] p-4 text-[#34d5a3] transition-all hover:bg-[#34d5a3] hover:text-[#454bc5]">
+    <div className="group flex flex-col border border-white/20 bg-surface p-4 text-accent transition-all hover:bg-accent hover:text-surface">
       <div className="mb-4 aspect-square w-full overflow-hidden bg-gray-100">
         <img
           src={product.image_url}
@@ -27,7 +27,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         href={product.buy_url}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-4 block border border-[#ffffff] bg-[#ffffff] py-2 text-center text-xs font-black tracking-widest text-[#454bc5] uppercase transition-colors group-hover:border-[#9625e9] group-hover:bg-[#9625e9] group-hover:text-white"
+        className="mt-4 block border border-white bg-white py-2 text-center text-xs font-black tracking-widest text-surface uppercase transition-colors group-hover:border-accent-strong group-hover:bg-accent-strong group-hover:text-white"
       >
         Shop Now
       </a>
