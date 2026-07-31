@@ -132,21 +132,44 @@ export default function Overlay() {
     setVisibleOption(settings.openedMenu.value);
   }, [settings.openedMenu.value]);
 
-  // Every product is addressable by its id and by its whitespace-stripped name,
-  // e.g. `!3` or `!glowreviverlipoil`. Products in an unknown category are
-  // skipped, as there'd be no panel to open them in.
+  // Every product is addressable by its id and by its whitespace-stripped name
+  // (`!3`, `!glowreviverlipoil`), plus any aliases it declares (`!shampoo`).
+  // Products in an unknown category are skipped, as there'd be no panel to
+  // open them in.
   const productCommands = useMemo(() => {
     const map = new Map<string, { product: Product; category: CategoryKey }>();
+
     for (const product of products) {
       const category = toCategoryKey(product.category);
       if (!category) continue;
 
-      map.set(String(product.id).toLowerCase(), { product, category });
-      map.set(product.name.toLowerCase().replace(/\s+/g, ""), {
-        product,
-        category,
-      });
+      const aliases = [
+        String(product.id),
+        product.name.replace(/\s+/g, ""),
+        ...(product.commands ?? []),
+      ];
+
+      for (const alias of aliases) {
+        const command = alias.trim().toLowerCase().replace(/^!+/, "");
+        if (!command) continue;
+
+        // First declaration wins, so a clash is deterministic rather than
+        // depending on product order. Surface it — products.json is
+        // hand-maintained and a silently shadowed command looks like a bug
+        // in the extension rather than in the data.
+        const existing = map.get(command);
+        if (existing) {
+          if (existing.product.id !== product.id)
+            console.warn(
+              `*Twitch extension: chat command "!${command}" is claimed by product ${existing.product.id} (${existing.product.name}); ignoring it for ${product.id} (${product.name})*`,
+            );
+          continue;
+        }
+
+        map.set(command, { product, category });
+      }
     }
+
     return map;
   }, [products]);
 

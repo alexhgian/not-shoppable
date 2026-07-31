@@ -94,5 +94,59 @@
     "price": "$13.00",
     "image_url": "https://cdn.shopify.com/s/files/1/0661/2251/4520/files/57167_CLOSED_R.png?v=1776967306&width=720&height=720&crop=center",
     "buy_url": "https://go.elfcosmetics.com/tripleboost"
+  },
+  {
+    "id": "13",
+    "name": "Never Thirsty Moisturizing Shampoo",
+    "category": "Haircare",
+    "price": "$9.00",
+    "image_url": "https://cdn.shopify.com/s/files/1/0661/2251/4520/files/97511_Closed_R_a2203da8-fd9b-43a3-a8b6-f13d03b2deb5.png?v=1780519958&width=720&height=720&crop=center",
+    "buy_url": "https://go.elfcosmetics.com/shampoo",
+    "commands": ["shampoo"]
+  },
+  {
+    "id": "14",
+    "name": "Never Thirsty Moisturizing Conditioner",
+    "category": "Haircare",
+    "price": "$9.00",
+    "image_url": "https://cdn.shopify.com/s/files/1/0661/2251/4520/files/97512_Closed_V2_R_8fe0db48-7435-4541-ab6c-9bfeb94759b2.png?v=1780522387&width=720&height=720&crop=center",
+    "buy_url": "https://go.elfcosmetics.com/conditioner",
+    "commands": ["conditioner"]
+  },
+  {
+    "id": "15",
+    "name": "Humidity Hero Anti-Frizz Styling Spray",
+    "category": "Haircare",
+    "price": "$9.00",
+    "image_url": "https://cdn.shopify.com/s/files/1/0661/2251/4520/files/97519_Closed_V2_R_89594f28-b948-42f3-9be6-97333c6c6717.png?v=1780924839&width=720&height=720&crop=center",
+    "buy_url": "https://go.elfcosmetics.com/humidity",
+    "commands": ["humidityhero"]
+  },
+  {
+    "id": "16",
+    "name": "Gloss Mode Treatment Oil",
+    "category": "Haircare",
+    "price": "$10.00",
+    "image_url": "https://cdn.shopify.com/s/files/1/0661/2251/4520/files/97514_OpenA_R_7f4a36d6-136f-46f9-a743-8fdfeabfb82a.png?v=1780591539&width=720&height=720&crop=center",
+    "buy_url": "https://go.elfcosmetics.com/glossmode",
+    "commands": ["glossmode"]
+  },
+  {
+    "id": "17",
+    "name": "3-in-Wonder Magic Styling Cream Wand",
+    "category": "Haircare",
+    "price": "$6.00",
+    "image_url": "https://cdn.shopify.com/s/files/1/0661/2251/4520/files/97527_OpenA_V2_R_813e9c7f-e313-4f55-b42d-35dd4874c0f7.png?v=1780589794&width=720&height=720&crop=center",
+    "buy_url": "https://go.elfcosmetics.com/stylingwand",
+    "commands": ["stylingwand"]
+  },
+  {
+    "id": "18",
+    "name": "3-in-Wonder Magic Styling Cream",
+    "category": "Haircare",
+    "price": "$9.00",
+    "image_url": "https://cdn.shopify.com/s/files/1/0661/2251/4520/files/97526_OpenA_R_f35afd4c-5e0f-4487-8814-5d1a48129192.png?v=1780589042&width=720&height=720&crop=center",
+    "buy_url": "https://go.elfcosmetics.com/stylingcream",
+    "commands": ["stylingcream"]
   }
 ]
