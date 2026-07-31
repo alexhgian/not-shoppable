@@ -1,9 +1,6 @@
 import { useCallback, useEffect, useMemo } from "react";
 import tmi, { type ChatUserstate } from "tmi.js";
 
-import { typeSafeObjectEntries } from "../utils/helpers";
-
-import { useAmbassadors } from "./useAmbassadors";
 import useChannel from "./useChannel";
 
 const parseCsvEnv = (env: string | undefined): string[] =>
@@ -20,7 +17,14 @@ const privilegedUsers = parseCsvEnv(
   process.env.REACT_APP_CHAT_COMMANDS_PRIVILEGED_USERS,
 );
 
+/**
+ * Listen for `!command` messages from mods/broadcaster in the channel's chat.
+ *
+ * `commands` is the set of recognised command names (lowercase); anything else
+ * is ignored so we don't fire the callback for unrelated chat commands.
+ */
 export default function useChatCommand(
+  commands: ReadonlySet<string>,
   callback: (command: string, args: string[]) => void,
 ) {
   const channel = useChannel();
@@ -46,21 +50,6 @@ export default function useChatCommand(
     [channel],
   );
 
-  const ambassadors = useAmbassadors();
-  const commandsMap = useMemo(() => {
-    const commands = new Map<string, string>();
-    if (ambassadors) {
-      typeSafeObjectEntries(ambassadors).forEach(([key, ambassador]) => {
-        ambassador.commands.forEach((command) => {
-          commands.set(command.toLowerCase(), key);
-        });
-      });
-    }
-    commands.set("welcome", "welcome");
-    commands.set("refresh", "refresh");
-    return commands;
-  }, [ambassadors]);
-
   const messageHandler = useCallback(
     (
       id: number,
@@ -84,15 +73,8 @@ export default function useChatCommand(
         .trim()
         .replace(/\s+/g, " ")
         .split(" ");
-      const command = commandName && commandsMap.get(commandName.toLowerCase());
-      if (!command) return;
-
-      // Handle any special commands + privilege edge cases
-      if (
-        command === "refresh" &&
-        !privilegedUsers.includes(tags.username?.toLowerCase() ?? "")
-      )
-        return;
+      const command = commandName?.toLowerCase();
+      if (!command || !commands.has(command)) return;
 
       console.log(
         `*Twitch extension received command: ${command} (${args})*`,
@@ -100,7 +82,7 @@ export default function useChatCommand(
       );
       callback(command, args);
     },
-    [commandsMap, callback],
+    [commands, callback],
   );
 
   useEffect(() => {

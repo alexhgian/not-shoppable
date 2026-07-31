@@ -8,7 +8,10 @@ import Tooltip from "../../../components/Tooltip";
 export interface ButtonsOption {
   key: string;
   type: "primary" | "secondary";
-  icon: (props: { size: number; className?: string }) => React.ReactNode | Promise<React.ReactNode>;
+  icon: (props: {
+    size: number;
+    className?: string;
+  }) => React.ReactNode | Promise<React.ReactNode>;
   title: string;
 }
 

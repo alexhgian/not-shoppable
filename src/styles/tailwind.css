@@ -1,18 +1,29 @@
 @import "tailwindcss";
-@import "@alveusgg/data/build/tailwind.css";
 
 @plugin "tailwind-scrollbar";
 
 /* FIXME: https://github.com/tailwindlabs/tailwindcss/discussions/15253 */
 @theme inline {
   --font-sans:
-    "Futura Now Text", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    "Futura Now Text", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-serif:
-    "Futura Now Text", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+    "Futura Now Text", ui-serif, Georgia, Cambria, "Times New Roman", Times,
+    serif;
 }
 
 @theme {
   --default-transition-duration: 300ms;
+
+  /* elfyou palette — the gaming-side e.l.f. brand used across the extension */
   --color-elfyou: #ff007a;
+  --color-elfyou-indigo: #454bc5;
+  --color-elfyou-navy: #2b2f6a;
+  --color-elfyou-mint: #34d5a3;
+  --color-elfyou-mint-light: #9af4cb;
+  --color-elfyou-purple: #9625e9;
+  --color-elfyou-cream: #f5f0e8;
+
+  /* Focus/active affordance, used by Ring and the outline-* utilities */
+  --color-highlight: var(--color-elfyou);
 }

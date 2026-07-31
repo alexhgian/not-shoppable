@@ -1,15 +1,15 @@
 {
-  "name": "@alveusgg/extension",
+  "name": "@egen-co/not-shoppable",
   "version": "0.1.0",
   "private": true,
   "license": "SEE LICENSE IN LICENSE.md",
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/alveusgg/extension.git"
+    "url": "git+https://github.com/egen-co/not-shoppable.git"
   },
   "bugs": {
-    "url": "https://github.com/alveusgg/extension/issues"
+    "url": "https://github.com/egen-co/not-shoppable/issues"
   },
   "engines": {
     "node": ">=24.11.0",
@@ -29,11 +29,8 @@
     "types": "tsc --noEmit"
   },
   "dependencies": {
-    "@alveusgg/data": "0.71.0",
     "@headlessui/react": "^2.2.10",
-    "luxon": "^3.7.2",
     "react": "^19.2.5",
-    "react-canvas-confetti": "^2.0.7",
     "react-dom": "^19.2.5",
     "tmi.js": "^1.8.5",
     "zod": "^4.3.6"
@@ -43,9 +40,7 @@
     "@pmmmwh/react-refresh-webpack-plugin": "^0.6.2",
     "@tailwindcss/postcss": "^4.2.2",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
-    "@types/canvas-confetti": "^1.9.0",
     "@types/eslint-config-prettier": "^6.11.3",
-    "@types/luxon": "^3.7.1",
     "@types/node": "^24.12.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
@@ -101,7 +96,6 @@
     "importOrder": [
       "<BUILTIN_MODULES>",
       "<THIRD_PARTY_MODULES>",
-      "^@alveusgg/data(/.+)?$",
       "^(\\.\\./)+utils/",
       "^(\\.\\./)+hooks/",
       "^(\\.\\./)+components/(?!icons/)",

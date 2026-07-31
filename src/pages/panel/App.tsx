@@ -1,16 +1,12 @@
-import { AmbassadorsProvider } from "../../hooks/useAmbassadors";
-
-import Ambassadors from "./components/Ambassadors";
 import Nav from "./components/Nav";
+import Products from "./components/Products";
 
 function App() {
   return (
-    <AmbassadorsProvider>
-      <div className="relative h-full w-full">
-        <Nav />
-        <Ambassadors />
-      </div>
-    </AmbassadorsProvider>
+    <div className="relative h-full w-full">
+      <Nav />
+      <Products />
+    </div>
   );
 }
 

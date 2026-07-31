@@ -1,16 +1,17 @@
 import { Transition } from "@headlessui/react";
 import {
-  type FC,
   type MouseEvent,
   useCallback,
   useEffect,
-  useRef,
   useMemo,
-  useState,
+  useRef,
 } from "react";
 
+import { type CategoryKey, toCategoryKey } from "../../../../utils/categories";
 import { classes } from "../../../../utils/classes";
+
 import { useProducts } from "../../../../hooks/useProducts";
+
 import { ProductCard } from "../../../../components/ProductCard";
 
 import IconChevron from "../../../../components/icons/IconChevron";
@@ -19,17 +20,18 @@ import type { OverlayOptionProps } from "./Overlay";
 
 const PRODUCT_DATA_URL = "./products.json";
 
-const arrowClass = "absolute border-0 cursor-pointer text-white w-full h-[var(--list-fade-padding)] z-20 transition-opacity group pt-[var(--twitch-vertical-padding)] pb-4 box-content";
+const arrowClass =
+  "absolute border-0 cursor-pointer text-white w-full h-[var(--list-fade-padding)] z-20 transition-opacity group pt-[var(--twitch-vertical-padding)] pb-4 box-content";
 const arrowSvgClass =
   "mx-auto drop-shadow-lg overflow-visible transition-transform group-hover:scale-125 group-focus:scale-125";
 const arrowPathClass =
-  "[&_path]:stroke-alveus-tan [&_path]:stroke-[0.25rem] [&_path]:[paint-order:stroke] [&_path]:transition-[stroke] [&_path]:group-hover:stroke-highlight [&_path]:group-hover:stroke-[0.375rem] [&_path]:group-focus:stroke-highlight [&_path]:group-focus:stroke-[0.375rem]";
+  "[&_path]:stroke-elfyou-cream [&_path]:stroke-[0.25rem] [&_path]:[paint-order:stroke] [&_path]:transition-[stroke] [&_path]:group-hover:stroke-highlight [&_path]:group-hover:stroke-[0.375rem] [&_path]:group-focus:stroke-highlight [&_path]:group-focus:stroke-[0.375rem]";
 const hiddenClass = "opacity-0 pointer-events-none";
 
-type AmbassadorsProps = OverlayOptionProps & { category?: string };
+type ProductsProps = OverlayOptionProps & { category?: CategoryKey };
 const activeIdClass = "bg-white text-black font-bold";
 
-export default function Ambassadors(props: AmbassadorsProps) {
+export default function Products(props: ProductsProps) {
   const { className, context, category } = props;
   const { activeProduct, setActiveProduct } = context;
   const { products: allProducts, loading } = useProducts(PRODUCT_DATA_URL);
@@ -37,7 +39,7 @@ export default function Ambassadors(props: AmbassadorsProps) {
   const products = useMemo(() => {
     if (!category) return allProducts;
     return allProducts.filter(
-      (p: any) => p.category?.toLowerCase() === category.toLowerCase(),
+      (product) => toCategoryKey(product.category) === category,
     );
   }, [allProducts, category]);
 
@@ -104,7 +106,7 @@ export default function Ambassadors(props: AmbassadorsProps) {
   }, []);
 
   // Check the arrow visibility on mount, as browsers restore odd scroll positions
-  // Also, check it whenever the ambassador list changes as the list may change size
+  // Also, check it whenever the product list changes as the list may change size
   useEffect(() => {
     handleArrowVisibility();
 
@@ -118,7 +120,7 @@ export default function Ambassadors(props: AmbassadorsProps) {
   return (
     <div
       className={classes(
-        "absolute top-0 left-0 z-0 grid h-full grid-cols-auto-2 grid-rows-1",
+        "grid-cols-auto-2 absolute top-0 left-0 z-0 grid h-full grid-rows-1",
         className,
       )}
     >
@@ -128,30 +130,38 @@ export default function Ambassadors(props: AmbassadorsProps) {
           className="list-fade -my-[var(--twitch-vertical-padding)] scrollbar-none flex w-48 flex-col items-center gap-4 overflow-scroll px-4 py-[calc(var(--twitch-vertical-padding)+var(--list-fade-padding))]"
           onScroll={handleArrowVisibility}
         >
+          {products.length === 0 && (
+            <p className="w-full border border-white bg-black p-3 text-center text-[10px] leading-relaxed tracking-widest text-white uppercase">
+              Coming soon
+            </p>
+          )}
+
           {products.map((product) => (
             <button
               id={`product-${product.id}`}
               key={product.id}
               onClick={() =>
                 setActiveProduct((prev) =>
-                  prev.key === String(product.id) ? {} : { key: String(product.id) },
+                  prev.key === String(product.id)
+                    ? {}
+                    : { key: String(product.id) },
                 )
               }
               className={classes(
-            "flex w-full items-center gap-2 border border-white p-2 text-xs uppercase tracking-tighter transition-colors hover:bg-white hover:text-black",
+                "flex w-full items-center gap-2 border border-white p-2 text-xs tracking-tighter uppercase transition-colors hover:bg-white hover:text-black",
                 activeProductId === String(product.id)
                   ? activeIdClass
                   : "bg-black text-white",
               )}
             >
-          {product.image_url && (
-            <img
-              src={product.image_url}
-              alt=""
-              className="h-10 w-10 shrink-0 object-contain"
-            />
-          )}
-          <span className="flex-1 text-left">{product.name}</span>
+              {product.image_url && (
+                <img
+                  src={product.image_url}
+                  alt=""
+                  className="h-10 w-10 shrink-0 object-contain"
+                />
+              )}
+              <span className="flex-1 text-left">{product.name}</span>
             </button>
           ))}
         </div>
@@ -187,7 +197,10 @@ export default function Ambassadors(props: AmbassadorsProps) {
       </div>
 
       {products.map((product) => (
-        <Transition show={activeProductId === String(product.id)} key={product.id}>
+        <Transition
+          show={activeProductId === String(product.id)}
+          key={product.id}
+        >
           <div className="z-0 col-start-2 row-start-1 flex max-h-full max-w-[300px] origin-[center_left] self-center transition-[opacity,transform,translate] will-change-[opacity,transform,translate] data-[closed]:-translate-x-10 data-[closed]:opacity-0 data-[closed]:motion-reduce:translate-x-0">
             <div className="p-4">
               <ProductCard product={product} />

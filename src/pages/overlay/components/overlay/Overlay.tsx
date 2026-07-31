@@ -8,24 +8,31 @@ import {
   useState,
 } from "react";
 
+import {
+  type CategoryKey,
+  categories,
+  toCategoryKey,
+} from "../../../../utils/categories";
 import { classes } from "../../../../utils/classes";
 import { visibleUnderCursor } from "../../../../utils/dom";
 
-import { useProducts } from "../../../../hooks/useProducts";
 import useChatCommand from "../../../../hooks/useChatCommand";
+import { useProducts } from "../../../../hooks/useProducts";
 import useSettings from "../../hooks/useSettings";
 import useSleeping from "../../hooks/useSleeping";
 
 import Welcome from "../../../../components/Welcome";
 
 import IconLipstick from "../../../../components/icons/IconLipstick";
-import IconWaterdrop from "../../../../components/icons/IconWaterdrop";
 import IconSettings from "../../../../components/icons/IconSettings";
+import IconSparkles from "../../../../components/icons/IconSparkles";
+import IconWaterdrop from "../../../../components/icons/IconWaterdrop";
 import IconWelcome from "../../../../components/icons/IconWelcome";
 
+import type { Product } from "../../../../types/product";
 import Buttons, { type ButtonsOption } from "../Buttons";
 
-import AmbassadorsOverlay from "./Ambassadors";
+import ProductsOverlay from "./Products";
 import SettingsOverlay from "./Settings";
 
 // Show command-triggered popups for 10s
@@ -34,10 +41,18 @@ const commandTimeout = 10_000;
 const PRODUCT_DATA_URL = "./products.json";
 
 type OverlayOption = ButtonsOption & {
+  key: OverlayKey;
   component: (props: OverlayOptionProps) => React.ReactNode;
 };
 
-const overlayOptions = [
+// Every category needs an icon; this fails to compile if one is missing
+const categoryIcons = {
+  makeup: IconLipstick,
+  skincare: IconWaterdrop,
+  haircare: IconSparkles,
+} satisfies Record<CategoryKey, OverlayOption["icon"]>;
+
+const overlayOptions: OverlayOption[] = [
   {
     key: "welcome",
     type: "primary",
@@ -50,24 +65,15 @@ const overlayOptions = [
       />
     ),
   },
-  {
-    key: "makeup",
-    type: "primary",
-    icon: IconLipstick,
-    title: "Makeup Products",
-    component: (props) => (
-      <AmbassadorsOverlay {...props} category="makeup" />
+  ...categories.map((category) => ({
+    key: category.key,
+    type: "primary" as const,
+    icon: categoryIcons[category.key],
+    title: `${category.label} Products`,
+    component: (props: OverlayOptionProps) => (
+      <ProductsOverlay {...props} category={category.key} />
     ),
-  },
-  {
-    key: "skincare",
-    type: "primary",
-    icon: IconWaterdrop,
-    title: "Skincare Products",
-    component: (props) => (
-      <AmbassadorsOverlay {...props} category="skincare" />
-    ),
-  },
+  })),
   {
     key: "settings",
     type: "secondary",
@@ -75,12 +81,12 @@ const overlayOptions = [
     title: "Extension Settings",
     component: SettingsOverlay,
   },
-] as const satisfies OverlayOption[];
+];
 
-export const isValidOverlayKey = (key: string) =>
+export const isValidOverlayKey = (key: string): key is OverlayKey =>
   key === "" || overlayOptions.some((option) => option.key === key);
 
-export type OverlayKey = (typeof overlayOptions)[number]["key"] | "";
+export type OverlayKey = "" | "welcome" | "settings" | CategoryKey;
 
 type ActiveProductState = {
   key?: string;
@@ -109,8 +115,7 @@ export default function Overlay() {
 
   const { products } = useProducts(PRODUCT_DATA_URL);
 
-  const [activeProduct, setActiveProduct] =
-    useState<ActiveProductState>({});
+  const [activeProduct, setActiveProduct] = useState<ActiveProductState>({});
   const [visibleOption, setVisibleOption] = useState<OverlayKey>(
     settings.openedMenu.value,
   );
@@ -127,41 +132,55 @@ export default function Overlay() {
     setVisibleOption(settings.openedMenu.value);
   }, [settings.openedMenu.value]);
 
+  // Every product is addressable by its id and by its whitespace-stripped name,
+  // e.g. `!3` or `!glowreviverlipoil`. Products in an unknown category are
+  // skipped, as there'd be no panel to open them in.
+  const productCommands = useMemo(() => {
+    const map = new Map<string, { product: Product; category: CategoryKey }>();
+    for (const product of products) {
+      const category = toCategoryKey(product.category);
+      if (!category) continue;
+
+      map.set(String(product.id).toLowerCase(), { product, category });
+      map.set(product.name.toLowerCase().replace(/\s+/g, ""), {
+        product,
+        category,
+      });
+    }
+    return map;
+  }, [products]);
+
+  const chatCommands = useMemo(
+    () => new Set(Array.from(productCommands.keys()).concat("welcome")),
+    [productCommands],
+  );
+
   // When a chat command is run, wake the overlay
   useChatCommand(
+    chatCommands,
     useCallback(
       (command: string, args: string[]) => {
-        if (!settings.disableChatPopup.value) {
-          const product = products.find(
-            (p) =>
-              String(p.id) === command ||
-              p.name.toLowerCase().replace(/\s+/g, "") === command.toLowerCase(),
-          );
-          if ((product || command === "welcome") && args.length === 0) {
-            if (product)
-              setActiveProduct({ key: String(product.id), isCommand: true });
+        if (settings.disableChatPopup.value || args.length !== 0) return;
 
-            // Show the card
-            setVisibleOption(
-              product
-                ? (product.category?.toLowerCase() as OverlayKey)
-                : "welcome",
-            );
+        const match = productCommands.get(command);
+        if (match)
+          setActiveProduct({ key: String(match.product.id), isCommand: true });
 
-            // Dismiss the overlay after a delay
-            if (timeoutRef.current) clearTimeout(timeoutRef.current);
-            timeoutRef.current = setTimeout(() => {
-              setVisibleOption("");
-              setActiveProduct({});
-            }, commandTimeout);
+        // Show the card
+        setVisibleOption(match ? match.category : "welcome");
 
-            // Track that we're waking up, so that we don't immediately clear the timeout, and wake the overlay
-            awakingRef.current = true;
-            wake(commandTimeout);
-          }
-        }
+        // Dismiss the overlay after a delay
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        timeoutRef.current = setTimeout(() => {
+          setVisibleOption("");
+          setActiveProduct({});
+        }, commandTimeout);
+
+        // Track that we're waking up, so that we don't immediately clear the timeout, and wake the overlay
+        awakingRef.current = true;
+        wake(commandTimeout);
       },
-      [settings.disableChatPopup.value, products, wake],
+      [settings.disableChatPopup.value, productCommands, wake],
     ),
   );
 
