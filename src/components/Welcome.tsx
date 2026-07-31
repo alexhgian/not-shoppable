@@ -7,7 +7,7 @@ import IconTwitter from "./icons/IconTwitter";
 import Card from "./Card";
 
 const socialClass =
-  "transition-[color,transform,scale] hover:scale-125 focus:scale-125 hover:text-[#34d5a3] focus:text-[#34d5a3]";
+  "transition-[color,transform,scale] hover:scale-125 focus:scale-125 hover:text-accent focus:text-accent";
 
 interface WelcomeProps {
   className?: string;

@@ -25,7 +25,7 @@ const arrowClass =
 const arrowSvgClass =
   "mx-auto drop-shadow-lg overflow-visible transition-transform group-hover:scale-125 group-focus:scale-125";
 const arrowPathClass =
-  "[&_path]:stroke-elfyou-cream [&_path]:stroke-[0.25rem] [&_path]:[paint-order:stroke] [&_path]:transition-[stroke] [&_path]:group-hover:stroke-highlight [&_path]:group-hover:stroke-[0.375rem] [&_path]:group-focus:stroke-highlight [&_path]:group-focus:stroke-[0.375rem]";
+  "[&_path]:stroke-neutral [&_path]:stroke-[0.25rem] [&_path]:[paint-order:stroke] [&_path]:transition-[stroke] [&_path]:group-hover:stroke-highlight [&_path]:group-hover:stroke-[0.375rem] [&_path]:group-focus:stroke-highlight [&_path]:group-focus:stroke-[0.375rem]";
 const hiddenClass = "opacity-0 pointer-events-none";
 
 type ProductsProps = OverlayOptionProps & { category?: CategoryKey };

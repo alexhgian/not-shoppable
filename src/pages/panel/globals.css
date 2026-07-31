@@ -2,7 +2,7 @@
 
 @layer base {
   body {
-    @apply h-screen w-screen overflow-hidden bg-black font-sans text-elfyou-cream;
+    @apply h-screen w-screen overflow-hidden bg-black font-sans text-neutral;
   }
 
   #root {
