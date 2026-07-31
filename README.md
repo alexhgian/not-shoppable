@@ -79,15 +79,52 @@ The panel is available at [localhost:8080/panel.html](https://localhost:8080/pan
 
 ## Chatbot Commands
 
-`![ambassador]`: displays the card of the corresponding ambassador
+Only mods, the broadcaster, and `REACT_APP_CHAT_COMMANDS_PRIVILEGED_USERS` can
+trigger these. Each opens the product's card for 10 seconds.
 
-- Note: `[ambassador]` is the first name of any ambassador (Ex: !nilla = Nilla Wafer, !snork = Snork)
+`![product]`: displays the card for that product. Every product answers to
 
-`!welcome`: displays the Alveus introduction section
+- its id — `!13`
+- its name with spaces removed — `!neverthirstymoisturizingshampoo`
+- any alias in its `commands` array — `!shampoo`
 
-`!refresh extension`: refreshes the extension with the latest ambassador data
+`!welcome`: displays the introduction card
 
-- Note: Only `REACT_APP_CHAT_COMMANDS_PRIVILEGED_USERS` have permission to run this command
+Viewers can disable command-triggered pop-ups via **Prevent mod-triggered card
+pop-ups** in the extension's settings panel.
+
+## Adding Products
+
+`public/products.json` is the catalogue. Rather than hand-editing it, paste the
+list into a file and run:
+
+```sh
+node scripts/add-products.mjs --category Haircare products.txt   # dry run
+node scripts/add-products.mjs --category Haircare --write products.txt
+```
+
+One product per line, tab- or pipe-separated. The alias and its `!` are both
+optional, and lines without a URL are ignored, so a pasted block with a
+heading works as-is:
+
+```
+HAIR
+Never Thirsty Moisturizing Shampoo	!shampoo	https://go.elfcosmetics.com/shampoo
+Gloss Mode Treatment Oil	glossmode	https://go.elfcosmetics.com/glossmode
+```
+
+Price and image are read from each product page's JSON-LD. **Don't replace this
+with markup scraping** — e.l.f. product pages carry cross-sell carousels, so
+"the first product image on the page" returns the same packshot for every
+product, and a naive price grep can pick up a carousel item. The script guards
+against this by rejecting a batch whose images share a SKU.
+
+It also refuses to write if any product is already present, an alias is already
+claimed, or an image or buy URL doesn't return 200 — and nothing is appended
+unless the whole batch is clean, so a partial failure can't leave half a batch
+in the catalogue.
+
+Run `pnpm lint` afterwards; Prettier formats `products.json`.
 
 ## Contribute
 
