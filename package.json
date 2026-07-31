@@ -22,6 +22,7 @@
     "build": "webpack",
     "lint:eslint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:prettier": "prettier --check .",
+    "lint:tokens": "node scripts/check-token-drift.mjs",
     "lint": "pnpm run \"/^lint:.*/\"",
     "format:eslint": "pnpm lint:eslint --fix",
     "format:prettier": "pnpm lint:prettier --write",
