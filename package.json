@@ -93,6 +93,7 @@
       "@trivago/prettier-plugin-sort-imports",
       "prettier-plugin-tailwindcss"
     ],
+    "endOfLine": "auto",
     "tailwindStylesheet": "./src/styles/tailwind.css",
     "importOrder": [
       "<BUILTIN_MODULES>",
