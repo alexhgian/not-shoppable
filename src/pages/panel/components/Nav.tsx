@@ -4,8 +4,6 @@ import Welcome from "../../../components/Welcome";
 
 import IconInfo from "../../../components/icons/IconInfo";
 
-import logo_src from "../../../assets/logo.png";
-
 import Overlay from "./Overlay";
 
 export default function Nav() {
@@ -13,7 +11,6 @@ export default function Nav() {
 
   return (
     <nav className="fixed inset-x-0 top-0 z-10 flex h-12 w-full items-center justify-start gap-3 bg-black px-4 shadow-lg backdrop-blur-sm sm:justify-center">
-      {/* <img className="h-8 w-auto" src={logo_src} alt="e.l.f. Logo" /> */}
       <h1 className="text-lg">e.l.f. Cosmetics</h1>
       <button
         className="group -mr-2 ml-auto rounded-full p-2 sm:absolute sm:right-4 sm:ml-0"

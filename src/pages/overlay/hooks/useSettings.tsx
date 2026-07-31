@@ -12,12 +12,6 @@ import {
   typeSafeObjectEntries,
   typeSafeObjectFromEntries,
 } from "../../../utils/helpers";
-import {
-  type SortMethod,
-  type SortOption,
-  sortMethods,
-  sortOptions,
-} from "../../../utils/sorting";
 
 import {
   type OverlayKey,
@@ -27,11 +21,6 @@ import {
 type Setting = { title: string; configurable: boolean } & (
   | { type: "boolean"; process: (value: any) => boolean }
   | { type: "string"; process: (value: any) => string }
-  | {
-      type: "select";
-      options: SortOption[];
-      process: (value: any) => string;
-    }
 );
 
 const settings = {
@@ -41,31 +30,8 @@ const settings = {
     process: (value: any) => !!value,
     configurable: true,
   },
-  disableCardEffects: {
-    title: "Disable 3D card effects",
-    type: "boolean",
-    process: (value: any) =>
-      !!(
-        value ?? window.matchMedia("(prefers-reduced-motion: reduce)").matches
-      ),
-    configurable: true,
-  },
-  ambassadorSort: {
-    title: "Sort cards by",
-    type: "select",
-    options: sortOptions,
-    process: (value: any): SortMethod =>
-      sortMethods.includes(value) ? value : "default",
-    configurable: true,
-  },
   disableOverlayHiding: {
     title: "(DEV) Prevent app hiding automatically",
-    type: "boolean",
-    process: (value: any) => process.env.NODE_ENV === "development" && !!value,
-    configurable: process.env.NODE_ENV === "development",
-  },
-  forceBirthdayEffects: {
-    title: "(DEV) Force birthday effects",
     type: "boolean",
     process: (value: any) => process.env.NODE_ENV === "development" && !!value,
     configurable: process.env.NODE_ENV === "development",

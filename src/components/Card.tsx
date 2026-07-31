@@ -1,8 +1,8 @@
 import { classes } from "../utils/classes";
 
-import Ring from "./Ring";
-
 import logo from "../assets/logo.png";
+
+import Ring from "./Ring";
 
 interface CardProps {
   children?: React.ReactNode;
@@ -23,15 +23,11 @@ export default function Card(props: CardProps) {
       )}
     >
       {title && (
-  <h2 className="mb-2 flex flex-col items-center justify-center gap-2 text-center font-sans text-3xl font-black text-balance text-[#9af4cb]" tracking-wider>
-    <img
-      src={logo}
-      alt="Logo"
-      className="h-20 w-20 object-contain"
-    />
-    {title}
-  </h2>
-)}
+        <h2 className="mb-2 flex flex-col items-center justify-center gap-2 text-center font-sans text-3xl font-black tracking-wider text-balance text-[#9af4cb]">
+          <img src={logo} alt="Logo" className="h-20 w-20 object-contain" />
+          {title}
+        </h2>
+      )}
       {children}
 
       <Ring className="rounded-3xl" />

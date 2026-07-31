@@ -5,7 +5,6 @@ import useSettings from "../../hooks/useSettings";
 
 import Card from "../../../../components/Card";
 
-import Select from "../Select";
 import Toggle from "../Toggle";
 
 import type { OverlayOptionProps } from "./Overlay";
@@ -29,14 +28,6 @@ export default function Settings(props: OverlayOptionProps) {
                 <Toggle
                   label={setting.title}
                   value={setting.value}
-                  onChange={setting.change}
-                />
-              )}
-              {setting.type === "select" && (
-                <Select
-                  label={setting.title}
-                  value={setting.value}
-                  options={setting.options}
                   onChange={setting.change}
                 />
               )}
