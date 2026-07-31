@@ -55,8 +55,22 @@ for (const [name, { value, evidence }] of Object.entries(spec.brand)) {
   }
 }
 
-// Deviations that name a token absent from `brand` (e.g. cream, which has no
-// brand counterpart) still have to match the stylesheet exactly.
+// 1b. Derived tints must match their recorded value exactly, so a hand-tweak
+// can't quietly replace a computed one (which is how #9af4cb got in).
+for (const [name, spec_] of Object.entries(spec.derived ?? {})) {
+  if (isMeta(name)) continue;
+  const actual = declaredHex[name];
+  if (actual === undefined) continue;
+  if (actual !== spec_.value.toLowerCase()) {
+    problems.push(
+      `--color-${name} is ${actual}, expected ${spec_.value}\n` +
+        `      derived from --color-${spec_.from} (${spec_.formula})`,
+    );
+  }
+}
+
+// Deviations that name a token absent from `brand` still have to match the
+// stylesheet exactly.
 for (const [name, deviation] of Object.entries(spec.acceptedDeviations)) {
   if (isMeta(name) || name in spec.brand) continue;
   const actual = declaredHex[name];
@@ -84,11 +98,14 @@ for (const [role, target] of Object.entries(spec.roles)) {
 }
 
 // 3. Unaccounted palette tokens
-const accountedFor = new Set([
-  ...Object.keys(spec.brand),
-  ...Object.keys(spec.unconfirmed).filter((k) => !isMeta(k)),
-  ...Object.keys(spec.acceptedDeviations).filter((k) => !isMeta(k)),
-]);
+const accountedFor = new Set(
+  [
+    ...Object.keys(spec.brand),
+    ...Object.keys(spec.derived ?? {}),
+    ...Object.keys(spec.unconfirmed),
+    ...Object.keys(spec.acceptedDeviations),
+  ].filter((k) => !isMeta(k)),
+);
 for (const name of Object.keys(declaredHex)) {
   if (!name.startsWith("elfyou-")) continue;
   if (!accountedFor.has(name)) {
