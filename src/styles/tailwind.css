@@ -21,11 +21,16 @@
    */
   --color-elfyou-magenta: #cd0eb4;
   --color-elfyou-indigo: #454bc5;
-  --color-elfyou-navy: #2b2f6a;
   --color-elfyou-mint: #34d5a3;
-  --color-elfyou-mint-light: #9af4cb;
-  --color-elfyou-purple: #9625e9;
-  --color-elfyou-cream: #f5f0e8;
+  --color-elfyou-purple: #a116f1;
+  --color-elfyou-white: #ffffff;
+
+  /* Derived: brand mint 50% toward white. Headings need 4.5:1 on surface;
+     measured mint alone is 3.65:1, this is 4.91:1. */
+  --color-elfyou-mint-200: #9aead1;
+
+  /* Unconfirmed — no asset evidence, carried from the port. */
+  --color-elfyou-navy: #2b2f6a;
 
   /*
    * Layer 2 — semantic roles, named by what they do. Components reference
@@ -36,7 +41,7 @@
   --color-surface-deep: var(--color-elfyou-navy);
   --color-accent: var(--color-elfyou-mint);
   --color-accent-strong: var(--color-elfyou-purple);
-  --color-heading: var(--color-elfyou-mint-light);
-  --color-neutral: var(--color-elfyou-cream);
+  --color-heading: var(--color-elfyou-mint-200);
+  --color-neutral: var(--color-elfyou-white);
   --color-highlight: var(--color-elfyou-magenta);
 }
