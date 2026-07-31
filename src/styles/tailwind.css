@@ -19,7 +19,7 @@
    * Layer 1 — the elfyou palette. Raw brand values, named by what they are.
    * Nothing outside this file should reference these directly.
    */
-  --color-elfyou: #ff007a;
+  --color-elfyou-magenta: #cd0eb4;
   --color-elfyou-indigo: #454bc5;
   --color-elfyou-navy: #2b2f6a;
   --color-elfyou-mint: #34d5a3;
@@ -38,5 +38,5 @@
   --color-accent-strong: var(--color-elfyou-purple);
   --color-heading: var(--color-elfyou-mint-light);
   --color-neutral: var(--color-elfyou-cream);
-  --color-highlight: var(--color-elfyou);
+  --color-highlight: var(--color-elfyou-magenta);
 }
