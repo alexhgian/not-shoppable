@@ -35,6 +35,50 @@ Once local testing is complete, a build can be created with `pnpm build`. The re
 
 With the assets hosted on Twitch, install the extension version on a test channel and verify that everything is working as expected when running from Twitch.
 
+## Before you submit
+
+The console reports missing Version Details one error at a time, so it is quicker to walk this list than to find the gaps one upload at a time.
+
+### Version Details
+
+| Field                           | Value                               |
+| ------------------------------- | ----------------------------------- |
+| Panel viewer path               | `panel.html`                        |
+| Mobile viewer path              | `mobile.html`                       |
+| Video - fullscreen path         | `video_overlay.html`                |
+| Privacy Notice                  | A public URL — required, see below  |
+| EULA or Terms of Service        | A public URL — see below            |
+| Image / URL fetching allowlists | See [Allowlists](#allowlists) above |
+
+Both legal URLs point at pages e.l.f. owns and must approve. Neither is something this repository can satisfy on its own.
+
+**The Privacy Notice is not optional for this extension.** Twitch demands one from every mobile-enabled extension and blocks submission without it:
+
+> Mobile-enabled Extensions must include a Privacy Notice before they can be submitted for review. Please set this under Version Details, or disable your Extension's mobile view if it is not necessary.
+
+The console offers disabling the mobile view as the way out. Don't take it — `mobile.html` is a first-class surface here and a large share of Twitch viewing is mobile. Supply the URL instead.
+
+What the notice needs to cover is already written up under "User Data" in [README.md](README.md): an anonymous chat connection used only to hear moderator commands, a local storage entry holding viewer preferences, no identity sharing, and no stored messages. Hosting that and getting it approved is e.l.f.'s call rather than this repo's — the corporate privacy policy is the fastest option, though it won't describe the chat connection or local storage specifically.
+
+**The EULA / Terms of Service URL** is described in the console as a "Reference URL for your EULA (End User License Agreement) or TOS (Terms of Service) of your Extension".
+
+Here e.l.f.'s existing store terms are arguably the correct answer rather than merely the convenient one. This extension does not transact, hold accounts, take payment, or accept user-generated content — it is a browsing surface, and every purchase completes on elfcosmetics.com under those terms already. A bespoke agreement would mostly restate them.
+
+Do not point this field at [LICENSE.md](LICENSE.md). That is the upstream Apache 2.0 licence, and it governs redistribution of this source code — it is not an agreement between viewers and e.l.f. A reviewer who follows the link will read the wrong document and can reasonably reject the version for it.
+
+### Image assets
+
+All four are uploaded under Version Details. Each must be a PNG at exactly the stated size; the console rejects anything else.
+
+| Asset        | Size       | Where it shows                     | Notes                                                                                                                                        |
+| ------------ | ---------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Logo         | 100 × 100  | Extension listing                  | The elfyou roundel from [`src/assets/logo.png`](src/assets/logo.png), scaled down. Keep the transparency — Twitch renders it on dark chrome. |
+| Taskbar icon | 24 × 24    | Video player taskbar               | Video extensions only. The wordmark is unreadable below ~48px, so this reads as a coloured mark rather than a legible logo.                  |
+| Discovery    | 300 × 200  | Discovery tab of Extension Manager | The magenta-on-indigo lockup.                                                                                                                |
+| Screenshot   | 1024 × 768 | Extension Detail page              | Shows the overlay in use. Best retaken from the live channel once the hosted-test version is installed.                                      |
+
+These come from the elfyou brand assets, not from anything in this repository — `pnpm build` does not produce them. Keep the uploaded copies with the brand files so the next version can reuse them.
+
 ## Submit for review
 
 With the extension installed on a test channel, submit the extension for review, providing the URL for the channel to use for testing.
